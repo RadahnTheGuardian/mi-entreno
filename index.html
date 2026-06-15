@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0f1420">
+  <title>Mi Entreno</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Mi Entreno">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="app-header">
+    <h1 id="perfil-header">💪 Mi entreno</h1>
+  </header>
+
+  <main>
+    <!-- ENTRENAR -->
+    <section id="view-entrenar" class="vista">
+      <div class="selector-dia">
+        <button class="dia-btn" data-dia="push">PUSH</button>
+        <button class="dia-btn" data-dia="pull">PULL</button>
+        <button class="dia-btn" data-dia="legs">LEGS</button>
+      </div>
+      <label class="campo-fecha">
+        Fecha y hora del entreno
+        <input type="datetime-local" id="fecha-entreno">
+      </label>
+      <div id="form-ejercicios"></div>
+      <button id="btn-guardar-sesion" class="btn-principal">💾 Guardar sesión</button>
+    </section>
+
+    <!-- HISTORIAL -->
+    <section id="view-historial" class="vista">
+      <h2>Historial</h2>
+      <div id="lista-historial"></div>
+    </section>
+
+    <!-- PROGRESO -->
+    <section id="view-progreso" class="vista">
+      <h2>Progreso</h2>
+      <div class="controles-progreso">
+        <label>Ejercicio<select id="sel-ejercicio"></select></label>
+        <label>Métrica<select id="sel-metrica"></select></label>
+        <label>Rango
+          <select id="sel-rango">
+            <option value="todo">Todo</option>
+            <option value="semana">Última semana</option>
+            <option value="mes">Último mes</option>
+            <option value="anio">Último año</option>
+            <option value="personalizado">Días concretos</option>
+          </select>
+        </label>
+        <div id="rango-personalizado" class="rango-personalizado">
+          <label>Desde<input type="date" id="rango-desde"></label>
+          <label>Hasta<input type="date" id="rango-hasta"></label>
+        </div>
+      </div>
+      <div id="resumen-progreso" class="resumen-progreso"></div>
+      <div class="grafico-wrap">
+        <canvas id="grafico"></canvas>
+        <p id="grafico-vacio" class="vacio"></p>
+      </div>
+    </section>
+
+    <!-- AJUSTES -->
+    <section id="view-ajustes" class="vista">
+      <h2>Ajustes</h2>
+      <div class="ajuste-card">
+        <label>Nombre del perfil
+          <input type="text" id="input-perfil" placeholder="Ej: Alex">
+        </label>
+        <button id="btn-guardar-perfil" class="btn-secundario">Guardar perfil</button>
+        <p class="hint">El nombre etiqueta tus gráficos y tu copia de seguridad.</p>
+      </div>
+      <div class="ajuste-card">
+        <h3>Copia de seguridad</h3>
+        <p class="hint">Tus datos se guardan solo en este dispositivo. Exporta de vez en cuando para no perderlos.</p>
+        <button id="btn-exportar" class="btn-secundario">⬇️ Exportar copia (.json)</button>
+        <label class="btn-secundario importar-label">
+          ⬆️ Importar copia
+          <input type="file" id="input-importar" accept="application/json,.json" hidden>
+        </label>
+      </div>
+      <div class="ajuste-card">
+        <h3>Zona peligrosa</h3>
+        <button id="btn-reiniciar" class="btn-peligro">Borrar todo el historial</button>
+      </div>
+      <p class="version">Mi Entreno · PWA · v1</p>
+    </section>
+  </main>
+
+  <nav class="bottom-nav">
+    <button class="nav-btn" data-vista="entrenar"><span>🏋️</span>Entrenar</button>
+    <button class="nav-btn" data-vista="historial"><span>📋</span>Historial</button>
+    <button class="nav-btn" data-vista="progreso"><span>📈</span>Progreso</button>
+    <button class="nav-btn" data-vista="ajustes"><span>⚙️</span>Ajustes</button>
+  </nav>
+
+  <script src="js/chart.umd.min.js"></script>
+  <script src="js/routine.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("sw.js").catch((e) => console.log("SW error", e));
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,177 @@
+/* ---------- Base ---------- */
+:root {
+  --bg: #0f1420;
+  --bg-card: #1a2233;
+  --bg-card-2: #222c42;
+  --txt: #e6e6e6;
+  --txt-dim: #a9b1bd;
+  --accent: #4f9dff;
+  --accent-2: #36c98e;
+  --peligro: #ff5a5a;
+  --push: #ff7a59;
+  --pull: #4f9dff;
+  --legs: #36c98e;
+  --radio: 14px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--txt);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  padding-bottom: 84px; /* espacio para la nav inferior */
+  padding-top: env(safe-area-inset-top);
+}
+
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(15, 20, 32, 0.95);
+  backdrop-filter: blur(8px);
+  padding: 14px 18px calc(14px) 18px;
+  padding-top: calc(14px + env(safe-area-inset-top));
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+.app-header h1 { margin: 0; font-size: 1.25rem; }
+
+main { padding: 16px; max-width: 640px; margin: 0 auto; }
+
+h2 { font-size: 1.3rem; margin: 4px 0 16px; }
+h3 { margin: 0 0 8px; font-size: 1.02rem; }
+
+/* ---------- Vistas ---------- */
+.vista { display: none; }
+.vista.activa { display: block; animation: fade 0.2s ease; }
+@keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+/* ---------- Selector de día ---------- */
+.selector-dia { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px; }
+.dia-btn {
+  padding: 14px 0; border: none; border-radius: var(--radio);
+  background: var(--bg-card); color: var(--txt-dim);
+  font-weight: 700; font-size: 1rem; cursor: pointer; transition: 0.15s;
+}
+.dia-btn.activa { background: var(--accent); color: #fff; }
+.dia-btn[data-dia="push"].activa { background: var(--push); }
+.dia-btn[data-dia="pull"].activa { background: var(--pull); }
+.dia-btn[data-dia="legs"].activa { background: var(--legs); }
+
+.campo-fecha {
+  display: flex; flex-direction: column; gap: 6px;
+  font-size: 0.85rem; color: var(--txt-dim); margin-bottom: 16px;
+}
+
+/* ---------- Inputs ---------- */
+input, select {
+  background: var(--bg-card-2); color: var(--txt);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px; padding: 12px; font-size: 1rem; width: 100%;
+}
+input:focus, select:focus { outline: 2px solid var(--accent); border-color: transparent; }
+
+/* ---------- Tarjeta de ejercicio ---------- */
+.ejercicio-card {
+  background: var(--bg-card); border-radius: var(--radio);
+  padding: 14px; margin-bottom: 14px;
+}
+.ejercicio-head h3 { margin: 0 0 2px; }
+.ejercicio-head .meta { color: var(--txt-dim); font-size: 0.82rem; }
+
+.series-tabla { margin-top: 12px; }
+.serie-row {
+  display: grid; grid-template-columns: 56px 1fr 1fr; gap: 8px;
+  align-items: center; margin-bottom: 8px;
+}
+.serie-row.cab { color: var(--txt-dim); font-size: 0.78rem; margin-bottom: 4px; }
+.serie-row.cab span { text-align: center; }
+.serie-num {
+  text-align: center; font-weight: 700; color: var(--txt-dim);
+  background: var(--bg-card-2); border-radius: 8px; padding: 10px 0;
+}
+.serie-row input { text-align: center; }
+
+.hint { color: var(--txt-dim); font-size: 0.78rem; margin: 6px 0 0; }
+
+/* ---------- Botones ---------- */
+.btn-principal {
+  width: 100%; padding: 16px; border: none; border-radius: var(--radio);
+  background: var(--accent-2); color: #06281c; font-weight: 800; font-size: 1.05rem;
+  cursor: pointer; margin: 6px 0 10px;
+}
+.btn-secundario {
+  display: inline-block; width: 100%; text-align: center;
+  padding: 13px; border: 1px solid rgba(255,255,255,0.12); border-radius: 10px;
+  background: var(--bg-card-2); color: var(--txt); font-weight: 600;
+  cursor: pointer; margin-top: 8px;
+}
+.importar-label { cursor: pointer; }
+.btn-peligro {
+  width: 100%; padding: 13px; border: 1px solid var(--peligro); border-radius: 10px;
+  background: transparent; color: var(--peligro); font-weight: 700; cursor: pointer;
+}
+
+/* ---------- Historial ---------- */
+.hist-card { background: var(--bg-card); border-radius: var(--radio); padding: 14px; margin-bottom: 12px; }
+.hist-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+.hist-dia {
+  display: inline-block; font-weight: 800; font-size: 0.72rem; padding: 3px 8px;
+  border-radius: 6px; margin-right: 6px; color: #fff;
+}
+.hist-dia.push { background: var(--push); }
+.hist-dia.pull { background: var(--pull); }
+.hist-dia.legs { background: var(--legs); }
+.hist-fecha { color: var(--txt-dim); font-size: 0.82rem; }
+.hist-resumen { color: var(--txt-dim); font-size: 0.85rem; margin: 8px 0; }
+.hist-detalle { margin: 0; padding-left: 18px; font-size: 0.9rem; }
+.hist-detalle li { margin-bottom: 3px; }
+.hist-acciones { display: flex; gap: 4px; }
+.mini { background: var(--bg-card-2); border: none; border-radius: 8px; padding: 8px 10px; cursor: pointer; font-size: 1rem; }
+
+.vacio { color: var(--txt-dim); text-align: center; padding: 30px 10px; }
+
+/* ---------- Progreso ---------- */
+.controles-progreso { display: grid; gap: 10px; margin-bottom: 14px; }
+.controles-progreso label { display: flex; flex-direction: column; gap: 5px; font-size: 0.82rem; color: var(--txt-dim); }
+.rango-personalizado { display: none; gap: 10px; }
+.rango-personalizado label { flex: 1; }
+
+.resumen-progreso { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 14px; }
+.resumen-progreso .stat {
+  background: var(--bg-card); border-radius: 10px; padding: 10px 6px; text-align: center;
+}
+.resumen-progreso .stat span { display: block; font-size: 0.68rem; color: var(--txt-dim); }
+.resumen-progreso .stat strong { font-size: 1.05rem; }
+.resumen-progreso .stat.subida strong { color: var(--accent-2); }
+.resumen-progreso .stat.bajada strong { color: var(--peligro); }
+
+.grafico-wrap { background: var(--bg-card); border-radius: var(--radio); padding: 12px; height: 320px; position: relative; }
+#grafico { width: 100% !important; height: 100% !important; }
+
+/* ---------- Ajustes ---------- */
+.ajuste-card { background: var(--bg-card); border-radius: var(--radio); padding: 16px; margin-bottom: 14px; }
+.ajuste-card label { display: flex; flex-direction: column; gap: 6px; font-size: 0.85rem; color: var(--txt-dim); }
+.version { text-align: center; color: var(--txt-dim); font-size: 0.75rem; margin-top: 20px; }
+
+/* ---------- Navegación inferior ---------- */
+.bottom-nav {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 20;
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  background: rgba(20, 26, 40, 0.97); backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.nav-btn {
+  background: none; border: none; color: var(--txt-dim);
+  padding: 10px 0 8px; font-size: 0.7rem; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+}
+.nav-btn span { font-size: 1.3rem; }
+.nav-btn.activa { color: var(--accent); }
