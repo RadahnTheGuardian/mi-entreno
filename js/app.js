@@ -38,7 +38,8 @@ function mostrarVista(vista) {
 
 function refrescarPerfilHeader() {
   const nombre = obtenerPerfil();
-  document.getElementById("perfil-header").textContent = nombre ? `💪 ${nombre}` : "💪 Mi entreno";
+  const etiqueta = nombre ? escapeHtml(nombre) : "Mi entreno";
+  document.getElementById("perfil-header").innerHTML = `<span class="emoji">💪</span> ${etiqueta}`;
 }
 
 // ---------- ENTRENAR ----------
@@ -191,8 +192,8 @@ function renderHistorial() {
           <span class="hist-fecha">${formatearFechaLarga(s.fecha)}</span>
         </div>
         <div class="hist-acciones">
-          <button class="mini" data-accion="editar" data-id="${s.id}">✏️</button>
-          <button class="mini" data-accion="borrar" data-id="${s.id}">🗑️</button>
+          <button class="mini" data-accion="editar" data-id="${s.id}"><span class="emoji">✏️</span></button>
+          <button class="mini" data-accion="borrar" data-id="${s.id}"><span class="emoji">🗑️</span></button>
         </div>
       </div>
       <p class="hist-resumen">${totalSeries} series · ${Math.round(volumen)} kg de volumen</p>
@@ -342,6 +343,15 @@ function configurarAjustes() {
       alert("Historial borrado");
     }
   });
+}
+
+// ---------- Utilidades ----------
+
+// Escapa texto del usuario antes de insertarlo con innerHTML.
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
 }
 
 // ---------- Utilidades de fecha ----------

@@ -14,7 +14,7 @@
 </head>
 <body>
   <header class="app-header">
-    <h1 id="perfil-header">💪 Mi entreno</h1>
+    <h1 id="perfil-header"><span class="emoji">💪</span> Mi entreno</h1>
   </header>
 
   <main>
@@ -30,7 +30,7 @@
         <input type="datetime-local" id="fecha-entreno">
       </label>
       <div id="form-ejercicios"></div>
-      <button id="btn-guardar-sesion" class="btn-principal">💾 Guardar sesión</button>
+      <button id="btn-guardar-sesion" class="btn-principal"><span class="emoji">💾</span> Guardar sesión</button>
     </section>
 
     <!-- HISTORIAL -->
@@ -95,9 +95,9 @@
       <div class="ajuste-card">
         <h3>Copia de seguridad</h3>
         <p class="hint">Tus datos se guardan solo en este dispositivo. Exporta de vez en cuando para no perderlos.</p>
-        <button id="btn-exportar" class="btn-secundario">⬇️ Exportar copia (.json)</button>
+        <button id="btn-exportar" class="btn-secundario"><span class="emoji">⬇️</span> Exportar copia (.json)</button>
         <label class="btn-secundario importar-label">
-          ⬆️ Importar copia
+          <span class="emoji">⬆️</span> Importar copia
           <input type="file" id="input-importar" accept="application/json,.json" hidden>
         </label>
       </div>
@@ -110,11 +110,11 @@
   </main>
 
   <nav class="bottom-nav">
-    <button class="nav-btn" data-vista="entrenar"><span>🏋️</span>Entrenar</button>
-    <button class="nav-btn" data-vista="historial"><span>📋</span>Historial</button>
-    <button class="nav-btn" data-vista="progreso"><span>📈</span>Progreso</button>
-    <button class="nav-btn" data-vista="metricas"><span>📊</span>Métricas</button>
-    <button class="nav-btn" data-vista="ajustes"><span>⚙️</span>Ajustes</button>
+    <button class="nav-btn" data-vista="entrenar"><span class="emoji">🏋️</span>Entrenar</button>
+    <button class="nav-btn" data-vista="historial"><span class="emoji">📋</span>Historial</button>
+    <button class="nav-btn" data-vista="progreso"><span class="emoji">📈</span>Progreso</button>
+    <button class="nav-btn" data-vista="metricas"><span class="emoji">📊</span>Métricas</button>
+    <button class="nav-btn" data-vista="ajustes"><span class="emoji">⚙️</span>Ajustes</button>
   </nav>
 
   <script src="js/chart.umd.min.js"></script>

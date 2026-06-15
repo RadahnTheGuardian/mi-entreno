@@ -253,9 +253,9 @@ input:focus, select:focus {
   display: flex; flex-direction: column; align-items: center; gap: 3px;
   transition: 0.15s;
 }
-.nav-btn span { font-size: 1.25rem; filter: grayscale(0.4); transition: 0.15s; }
+.nav-btn .emoji { font-size: 1.25rem; transition: transform 0.18s ease, filter 0.18s ease; }
 .nav-btn.activa { color: var(--accent); text-shadow: 0 0 8px var(--accent-glow); }
-.nav-btn.activa span { filter: none; transform: translateY(-1px); }
+.nav-btn.activa .emoji { transform: translateY(-2px) scale(1.08); }
 
 /* ---------- Ajustes ---------- */
 .ajuste-card {
@@ -264,3 +264,111 @@ input:focus, select:focus {
 }
 .ajuste-card label { display: flex; flex-direction: column; gap: 6px; font-size: 0.8rem; color: var(--txt-dim); }
 .version { text-align: center; color: var(--txt-dim); font-size: 0.72rem; margin-top: 20px; font-family: var(--mono); letter-spacing: 1px; }
+
+/* ============================================================
+   Emojis con estilo cyberpunk (tintados en rojo neón + glow)
+   ============================================================ */
+.emoji {
+  display: inline-block;
+  filter:
+    grayscale(1) brightness(0.7) sepia(1)
+    hue-rotate(310deg) saturate(7)
+    drop-shadow(0 0 4px rgba(255, 42, 77, 0.75));
+  transition: filter 0.18s ease, transform 0.18s ease;
+  animation: emoji-pulse 3.2s ease-in-out infinite;
+}
+.btn-principal .emoji,
+.btn-secundario .emoji { filter: brightness(0) invert(1) drop-shadow(0 0 5px rgba(255, 255, 255, 0.6)); }
+.btn-secundario:hover .emoji { transform: scale(1.12); }
+.mini .emoji { animation: none; }
+.mini:hover .emoji { transform: scale(1.18) rotate(-4deg); }
+
+@keyframes emoji-pulse {
+  0%, 100% { filter: grayscale(1) brightness(0.7) sepia(1) hue-rotate(310deg) saturate(7) drop-shadow(0 0 3px rgba(255, 42, 77, 0.55)); }
+  50%      { filter: grayscale(1) brightness(0.95) sepia(1) hue-rotate(310deg) saturate(8) drop-shadow(0 0 8px rgba(255, 42, 77, 0.95)); }
+}
+
+/* ============================================================
+   Animaciones de interfaz
+   ============================================================ */
+
+/* Línea de escaneo que recorre la pantalla */
+body::after {
+  content: "";
+  position: fixed; left: 0; right: 0; top: 0; height: 120px;
+  pointer-events: none; z-index: 5;
+  background: linear-gradient(to bottom, transparent, rgba(255, 42, 77, 0.06), transparent);
+  animation: scan 6s linear infinite;
+}
+@keyframes scan {
+  0%   { transform: translateY(-130px); }
+  100% { transform: translateY(100vh); }
+}
+
+/* Parpadeo/glitch del título de cabecera */
+.app-header h1 { animation: flicker 5.5s linear infinite; }
+@keyframes flicker {
+  0%, 92%, 100% { opacity: 1; text-shadow: 0 0 8px var(--accent-glow); }
+  93%  { opacity: 0.55; text-shadow: none; }
+  94%  { opacity: 1; text-shadow: 0 0 12px var(--accent-glow), 2px 0 var(--accent-2); }
+  95%  { opacity: 0.7; text-shadow: -2px 0 var(--accent); }
+  96%  { opacity: 1; text-shadow: 0 0 8px var(--accent-glow); }
+}
+
+/* Entrada escalonada de las tarjetas al mostrar una vista */
+.vista.activa .ejercicio-card,
+.vista.activa .hist-card,
+.vista.activa .mes-card,
+.vista.activa .ajuste-card {
+  animation: card-in 0.4s ease both;
+}
+.vista.activa .ejercicio-card:nth-child(2),
+.vista.activa .hist-card:nth-child(2),
+.vista.activa .mes-card:nth-child(2) { animation-delay: 0.05s; }
+.vista.activa .ejercicio-card:nth-child(3),
+.vista.activa .hist-card:nth-child(3),
+.vista.activa .mes-card:nth-child(3) { animation-delay: 0.1s; }
+.vista.activa .ejercicio-card:nth-child(4),
+.vista.activa .hist-card:nth-child(4),
+.vista.activa .mes-card:nth-child(4) { animation-delay: 0.15s; }
+.vista.activa .ejercicio-card:nth-child(n+5),
+.vista.activa .hist-card:nth-child(n+5),
+.vista.activa .mes-card:nth-child(n+5) { animation-delay: 0.2s; }
+@keyframes card-in {
+  from { opacity: 0; transform: translateX(-12px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Resumen de stats: aparecen con un pequeño zoom */
+.resumen-progreso .stat { animation: stat-in 0.35s ease both; }
+@keyframes stat-in {
+  from { opacity: 0; transform: scale(0.9); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Glow latente del botón principal */
+.btn-principal { animation: btn-glow 2.6s ease-in-out infinite; }
+@keyframes btn-glow {
+  0%, 100% { box-shadow: 0 0 14px rgba(255, 42, 77, 0.35); }
+  50%      { box-shadow: 0 0 26px rgba(255, 42, 77, 0.6); }
+}
+
+/* Botones de día: pequeño rebote al activarse */
+.dia-btn.activa { animation: pop 0.25s ease; }
+@keyframes pop {
+  0% { transform: scale(0.94); }
+  60% { transform: scale(1.04); }
+  100% { transform: scale(1); }
+}
+
+/* Pulso del icono de la pestaña activa */
+.nav-btn.activa .emoji { animation: nav-pulse 1.8s ease-in-out infinite; }
+@keyframes nav-pulse {
+  0%, 100% { transform: translateY(-2px) scale(1.05); }
+  50%      { transform: translateY(-2px) scale(1.18); }
+}
+
+/* Respeta a quien prefiere menos movimiento */
+@media (prefers-reduced-motion: reduce) {
+  *, body::after { animation: none !important; }
+}

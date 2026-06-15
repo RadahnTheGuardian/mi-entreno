@@ -118,8 +118,8 @@ function renderTablaMensual(cont, datos) {
       <div class="mes-card">
         <div class="mes-head"><strong>${etiquetaMes(m.clave)}</strong><span>${ses.length} sesiones</span></div>
         <div class="mes-stats">
-          <span>📦 ${vol} kg vol.</span>
-          <span>🔢 ${series} series</span>
+          <span><span class="emoji">📦</span> ${vol} kg vol.</span>
+          <span><span class="emoji">🔢</span> ${series} series</span>
         </div>
         <div class="mes-dias">
           <span class="hist-dia push">PUSH ${conteo.push}</span>
