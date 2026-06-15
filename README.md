@@ -9,6 +9,8 @@ tanto en **Android** como en **iPhone**, sin tiendas de apps.
 - ✅ Historial completo con fecha y hora.
 - ✅ Gráficos de progreso por ejercicio: peso máximo, 1RM estimado, volumen y reps.
 - ✅ Rango por días concretos, semana, mes o año.
+- ✅ **Métricas mensuales**: avances mes a mes (volumen, sesiones, series y reps) con gráfico de barras, comparativa con el mes anterior y desglose PUSH/PULL/LEGS.
+- ✅ Interfaz con estética **cyberpunk** (rojo neón sobre gris oscuro).
 - ✅ Datos guardados **solo en tu móvil** + copia de seguridad exportable.
 
 > ⚠️ **Importante sobre los datos:** se guardan únicamente en el dispositivo donde usas la app.
@@ -67,6 +69,7 @@ Una vez instalada, se abre a pantalla completa y **funciona sin internet**.
   **Guardar sesión**. La próxima vez los campos se rellenan con tu último registro.
 - **Historial:** consulta, edita (✏️) o borra (🗑️) sesiones pasadas.
 - **Progreso:** elige un ejercicio, la métrica y el rango de tiempo para ver el gráfico de evolución.
+- **Métricas:** mira tus avances mensuales globales: elige la métrica (volumen, sesiones, series o reps) y verás el gráfico por mes, el resumen comparado con el mes anterior y una tabla con el detalle de cada mes.
 - **Ajustes:** pon tu nombre de perfil, **exporta/importa** la copia de seguridad o reinicia los datos.
 
 ### Copias de seguridad y pasar datos a otro móvil
@@ -100,6 +103,7 @@ APP/
 │   ├── routine.js          # Tu rutina precargada
 │   ├── storage.js          # Guardado local + copias
 │   ├── charts.js           # Cálculo y dibujo de progreso
+│   ├── metricas.js         # Métricas y avances mensuales
 │   ├── app.js              # Lógica de la app
 │   └── chart.umd.min.js    # Librería de gráficos (Chart.js)
 ├── icons/                  # Iconos de la app
@@ -110,4 +114,4 @@ APP/
 
 Si algún día quieres cambiar ejercicios, series o reps, edita `js/routine.js`
 (está comentado y es fácil de seguir). Tras cambiar archivos, sube el número de versión
-en `sw.js` (`mi-entreno-v1` → `v2`) para que la app se actualice en los móviles.
+en `sw.js` (`mi-entreno-v2` → `v3`, etc.) para que la app se actualice en los móviles.

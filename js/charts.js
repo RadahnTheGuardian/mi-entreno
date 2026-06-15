@@ -100,11 +100,11 @@ function dibujarGrafico(canvas, datos, tituloMetrica) {
       datasets: [{
         label: tituloMetrica,
         data: datos.valores,
-        borderColor: "#4f9dff",
-        backgroundColor: "rgba(79,157,255,0.15)",
+        borderColor: "#ff2a4d",
+        backgroundColor: "rgba(255,42,77,0.15)",
         borderWidth: 2,
         pointRadius: 4,
-        pointBackgroundColor: "#4f9dff",
+        pointBackgroundColor: "#ff2a4d",
         tension: 0.25,
         fill: true,
       }],
@@ -113,11 +113,11 @@ function dibujarGrafico(canvas, datos, tituloMetrica) {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
-        legend: { labels: { color: "#e6e6e6" } },
+        legend: { labels: { color: "#ececf1" } },
       },
       scales: {
-        x: { ticks: { color: "#a9b1bd" }, grid: { color: "rgba(255,255,255,0.06)" } },
-        y: { ticks: { color: "#a9b1bd" }, grid: { color: "rgba(255,255,255,0.06)" }, beginAtZero: false },
+        x: { ticks: { color: "#8a8a99" }, grid: { color: "rgba(255,255,255,0.06)" } },
+        y: { ticks: { color: "#8a8a99" }, grid: { color: "rgba(255,255,255,0.06)" }, beginAtZero: false },
       },
     },
   });

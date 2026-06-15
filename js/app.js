@@ -11,6 +11,7 @@ function init() {
   registrarNavegacion();
   configurarEntrenar();
   configurarProgreso();
+  configurarMetricas();
   configurarAjustes();
   refrescarPerfilHeader();
   mostrarVista("entrenar");
@@ -32,6 +33,7 @@ function mostrarVista(vista) {
 
   if (vista === "historial") renderHistorial();
   if (vista === "progreso") { rellenarSelectorEjercicios(); actualizarGrafico(); }
+  if (vista === "metricas") renderMetricas();
 }
 
 function refrescarPerfilHeader() {
