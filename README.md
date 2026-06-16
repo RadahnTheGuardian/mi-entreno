@@ -9,7 +9,7 @@ tanto en **Android** como en **iPhone**, sin tiendas de apps.
 - ✅ Historial completo con fecha y hora.
 - ✅ Gráficos de progreso por ejercicio: peso máximo, 1RM estimado, volumen y reps.
 - ✅ Rango por días concretos, semana, mes o año.
-- ✅ **Salud**: calculadora de tasa metabólica basal (TMB), IMC, % de grasa estimado y calorías recomendadas según tu objetivo, con una ayuda **?** que explica cada dato.
+- ✅ **Salud**: calculadora de TMB, IMC, % de grasa estimado, peso saludable, calorías recomendadas, **macronutrientes** (proteína, carbohidratos y grasas) y **creatina**, con una ayuda **?** que explica cada dato.
 - ✅ **Alimentos**: escanea el código de barras de un producto con la cámara y se rellenan sus valores nutricionales (kcal, proteínas, hidratos, azúcares, grasas, sal) desde Open Food Facts. Si no aparece, **añádelo manualmente**. Se guardan en el dispositivo y entran en la copia de seguridad.
 - ✅ Interfaz con estética **cyberpunk** (rojo neón sobre gris oscuro).
 - ✅ Datos guardados **solo en tu móvil** + copia de seguridad exportable.
@@ -70,7 +70,7 @@ Una vez instalada, se abre a pantalla completa y **funciona sin internet**.
   **Guardar sesión**. La próxima vez los campos se rellenan con tu último registro.
 - **Historial:** consulta, edita (✏️) o borra (🗑️) sesiones pasadas.
 - **Progreso:** elige un ejercicio, la métrica y el rango de tiempo para ver el gráfico de evolución.
-- **Salud:** introduce sexo, edad, altura, peso, nivel de actividad y objetivo, y verás al instante tu **IMC**, tu **% de grasa estimado**, tu **TMB** (calorías en reposo), tus calorías de **mantenimiento** y las **calorías recomendadas** para tu objetivo. Pulsa la **?** junto a cada campo o resultado para ver una explicación sencilla. Los datos se recuerdan en el dispositivo.
+- **Salud:** introduce sexo, edad, altura, peso, nivel de actividad y objetivo, y verás al instante tu **IMC**, tu **% de grasa estimado**, tu **TMB** (calorías en reposo), tus calorías de **mantenimiento**, las **calorías recomendadas** para tu objetivo, tu **rango de peso saludable**, tus **macronutrientes** (proteína, carbohidratos y grasas en gramos/día) y la dosis de **creatina**. Pulsa la **?** junto a cada campo o resultado para ver una explicación sencilla. Los datos se recuerdan en el dispositivo.
 - **Comida (Alimentos):** pulsa **Escanear código**, apunta con la cámara al código de barras del producto y se rellenarán solos sus valores nutricionales; revisa, corrige si quieres y pulsa **Guardar alimento**. Si el producto no aparece o no puedes escanear, escribe el código a mano o pulsa **Añadir producto manualmente**. Los alimentos guardados salen listados y se incluyen en la copia de seguridad.
   - 📷 La cámara solo funciona sobre **HTTPS** (GitHub Pages ya lo es) y pedirá permiso la primera vez. Hace falta **conexión a internet** para consultar la base de datos.
   - 🍏 En **iPhone/Safari** el lector automático no está disponible: usa el campo "Introducir código a mano" o "Añadir producto manualmente". En **Android/Chrome** funciona el escaneo con cámara.

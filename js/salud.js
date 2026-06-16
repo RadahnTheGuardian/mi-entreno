@@ -81,6 +81,17 @@ function calcularSalud() {
   const objetivoLabel = objetivo === "perder" ? "Para perder grasa"
     : objetivo === "ganar" ? "Para ganar músculo" : "Para mantenerte";
 
+  // Peso saludable (rango de IMC 18.5–24.9 para tu altura)
+  const pesoMin = 18.5 * m * m;
+  const pesoMax = 24.9 * m * m;
+
+  // Macronutrientes para las calorías objetivo.
+  const protPorKg = objetivo === "perder" ? 2.2 : objetivo === "ganar" ? 2.0 : 1.8;
+  const protG = protPorKg * peso;     // proteína
+  const grasaG = 0.9 * peso;          // grasas (~0,9 g/kg)
+  let carbG = (objetivoKcal - protG * 4 - grasaG * 9) / 4; // hidratos: resto de kcal
+  if (carbG < 0) carbG = 0;
+
   cont.innerHTML = `
     ${tarjetaResultado("IMC", imc.toFixed(1), claseIMC(imc), categoriaIMC(imc),
       "Índice de Masa Corporal: relación entre tu peso y tu altura. Da una idea general de si estás por debajo, dentro o por encima de un peso saludable. Ojo: no distingue músculo de grasa, así que en gente muy musculada puede salir alto sin ser un problema.")}
@@ -92,6 +103,16 @@ function calcularSalud() {
       "Las calorías que gastas en un día normal contando tu nivel de actividad. Si comes aproximadamente esta cantidad, tu peso tiende a mantenerse igual.")}
     ${tarjetaResultado(objetivoLabel, Math.round(objetivoKcal) + " kcal", "destacado", "objetivo",
       "Las calorías recomendadas para tu objetivo: un déficit (~20% menos que el mantenimiento) para perder grasa, lo mismo para mantenerte, o un superávit (~10% más) para ganar músculo. Ajusta según veas resultados cada 2-3 semanas.")}
+    ${tarjetaResultado("Peso saludable", pesoMin.toFixed(0) + "–" + pesoMax.toFixed(0) + " kg", "", "rango",
+      "El rango de peso que corresponde a un IMC saludable (entre 18,5 y 24,9) para tu altura. Es una referencia general orientativa, no un objetivo exacto: no tiene en cuenta cuánto de tu peso es músculo.")}
+    ${tarjetaResultado("Proteína", Math.round(protG) + " g", "", protPorKg + " g/kg al día",
+      "Cantidad de proteína al día recomendada para tu objetivo. La proteína ayuda a mantener y construir músculo y a saciarte. Reparte esa cantidad entre las comidas del día (carne, pescado, huevos, lácteos, legumbres, etc.).")}
+    ${tarjetaResultado("Carbohidratos", Math.round(carbG) + " g", "", "al día",
+      "Los hidratos de carbono son tu principal fuente de energía, sobre todo para entrenar (arroz, pasta, pan, patata, fruta…). Esta cifra es el resto de calorías una vez cubiertas la proteína y la grasa.")}
+    ${tarjetaResultado("Grasas", Math.round(grasaG) + " g", "", "≈0,9 g/kg al día",
+      "Las grasas son necesarias para tus hormonas y para absorber ciertas vitaminas (aceite de oliva, frutos secos, aguacate, pescado azul…). Conviene no bajar de unos 0,8 g por kilo de peso.")}
+    ${tarjetaResultado("Creatina", "3–5 g", "", "al día",
+      "La creatina monohidrato es de los suplementos más estudiados y seguros: mejora la fuerza y el rendimiento. La dosis habitual es de 3 a 5 g al día, todos los días (también los que no entrenas); da igual la hora. Opcional: una 'fase de carga' de ~20 g/día repartidos durante 5-7 días para notar antes el efecto. Si tienes algún problema renal, consúltalo con un profesional.")}
   `;
 }
 
