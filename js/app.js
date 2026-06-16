@@ -12,6 +12,7 @@ function init() {
   configurarEntrenar();
   configurarProgreso();
   configurarMetricas();
+  configurarAlimentos();
   configurarAjustes();
   refrescarPerfilHeader();
   mostrarVista("entrenar");
@@ -26,6 +27,8 @@ function registrarNavegacion() {
 }
 
 function mostrarVista(vista) {
+  // Al cambiar de pestaña, apagamos la cámara si estaba escaneando.
+  if (vista !== "alimentos" && typeof detenerEscaner === "function") detenerEscaner();
   document.querySelectorAll(".vista").forEach((v) => v.classList.remove("activa"));
   document.querySelectorAll(".nav-btn").forEach((b) => b.classList.remove("activa"));
   document.getElementById("view-" + vista).classList.add("activa");
@@ -34,6 +37,7 @@ function mostrarVista(vista) {
   if (vista === "historial") renderHistorial();
   if (vista === "progreso") { rellenarSelectorEjercicios(); actualizarGrafico(); }
   if (vista === "metricas") renderMetricas();
+  if (vista === "alimentos") renderAlimentos();
 }
 
 function refrescarPerfilHeader() {

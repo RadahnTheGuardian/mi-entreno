@@ -82,6 +82,30 @@
       <div id="metricas-tabla" class="metricas-tabla"></div>
     </section>
 
+    <!-- ALIMENTOS -->
+    <section id="view-alimentos" class="vista">
+      <h2>Alimentos</h2>
+      <div class="escaner-card">
+        <div id="escaner-wrap" class="escaner-wrap">
+          <video id="escaner-video" playsinline muted></video>
+          <div class="escaner-laser"></div>
+          <div class="escaner-marco"></div>
+        </div>
+        <button id="btn-escanear" class="btn-principal"><span class="emoji">📷</span> Escanear código</button>
+        <button id="btn-detener" class="btn-secundario" hidden>Detener cámara</button>
+        <label class="campo-barcode">Introducir código a mano
+          <div class="barcode-manual">
+            <input type="text" id="input-codigo" inputmode="numeric" placeholder="Ej: 8410076472328">
+            <button id="btn-buscar-codigo" class="btn-secundario">Buscar</button>
+          </div>
+        </label>
+        <p id="escaner-estado" class="hint"></p>
+      </div>
+      <div id="alimento-resultado" class="alimento-resultado"></div>
+      <h3 class="sub-alimentos">Guardados</h3>
+      <div id="lista-alimentos"></div>
+    </section>
+
     <!-- AJUSTES -->
     <section id="view-ajustes" class="vista">
       <h2>Ajustes</h2>
@@ -114,6 +138,7 @@
     <button class="nav-btn" data-vista="historial"><span class="emoji">📋</span>Historial</button>
     <button class="nav-btn" data-vista="progreso"><span class="emoji">📈</span>Progreso</button>
     <button class="nav-btn" data-vista="metricas"><span class="emoji">📊</span>Métricas</button>
+    <button class="nav-btn" data-vista="alimentos"><span class="emoji">🍎</span>Comida</button>
     <button class="nav-btn" data-vista="ajustes"><span class="emoji">⚙️</span>Ajustes</button>
   </nav>
 
@@ -122,6 +147,7 @@
   <script src="js/storage.js"></script>
   <script src="js/charts.js"></script>
   <script src="js/metricas.js"></script>
+  <script src="js/alimentos.js"></script>
   <script src="js/app.js"></script>
   <script>
     if ("serviceWorker" in navigator) {

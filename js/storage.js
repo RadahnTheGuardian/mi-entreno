@@ -4,7 +4,7 @@
 const STORAGE_KEY = "entreno_app_v1";
 
 // Estado en memoria (se carga al inicio).
-let DATOS = { perfil: "", sesiones: [] };
+let DATOS = { perfil: "", sesiones: [], alimentos: [] };
 
 function cargarDatos() {
   try {
@@ -14,11 +14,12 @@ function cargarDatos() {
       DATOS = {
         perfil: typeof parsed.perfil === "string" ? parsed.perfil : "",
         sesiones: Array.isArray(parsed.sesiones) ? parsed.sesiones : [],
+        alimentos: Array.isArray(parsed.alimentos) ? parsed.alimentos : [],
       };
     }
   } catch (e) {
     console.error("No se pudieron cargar los datos:", e);
-    DATOS = { perfil: "", sesiones: [] };
+    DATOS = { perfil: "", sesiones: [], alimentos: [] };
   }
   return DATOS;
 }
@@ -64,6 +65,21 @@ function ultimaSesionEjercicio(ejercicioId) {
   return null;
 }
 
+// ---- Alimentos (valores nutricionales escaneados) ----
+function obtenerAlimentos() {
+  return [...DATOS.alimentos].sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+}
+function guardarAlimento(alimento) {
+  const idx = DATOS.alimentos.findIndex((a) => a.id === alimento.id);
+  if (idx >= 0) DATOS.alimentos[idx] = alimento;
+  else DATOS.alimentos.push(alimento);
+  persistir();
+}
+function borrarAlimento(id) {
+  DATOS.alimentos = DATOS.alimentos.filter((a) => a.id !== id);
+  persistir();
+}
+
 // Perfil
 function obtenerPerfil() {
   return DATOS.perfil;
@@ -107,6 +123,7 @@ function importarJSON(file) {
         DATOS = {
           perfil: typeof parsed.perfil === "string" ? parsed.perfil : DATOS.perfil,
           sesiones: parsed.sesiones,
+          alimentos: Array.isArray(parsed.alimentos) ? parsed.alimentos : DATOS.alimentos,
         };
         persistir();
         resolve(DATOS.sesiones.length);
@@ -120,6 +137,6 @@ function importarJSON(file) {
 }
 
 function reiniciarDatos() {
-  DATOS = { perfil: DATOS.perfil, sesiones: [] };
+  DATOS = { perfil: DATOS.perfil, sesiones: [], alimentos: [] };
   persistir();
 }
