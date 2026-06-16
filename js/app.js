@@ -11,7 +11,7 @@ function init() {
   registrarNavegacion();
   configurarEntrenar();
   configurarProgreso();
-  configurarMetricas();
+  configurarSalud();
   configurarAlimentos();
   configurarAjustes();
   refrescarPerfilHeader();
@@ -36,7 +36,7 @@ function mostrarVista(vista) {
 
   if (vista === "historial") renderHistorial();
   if (vista === "progreso") { rellenarSelectorEjercicios(); actualizarGrafico(); }
-  if (vista === "metricas") renderMetricas();
+  if (vista === "salud") calcularSalud();
   if (vista === "alimentos") renderAlimentos();
 }
 

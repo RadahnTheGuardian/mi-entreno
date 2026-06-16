@@ -4,7 +4,7 @@
 const STORAGE_KEY = "entreno_app_v1";
 
 // Estado en memoria (se carga al inicio).
-let DATOS = { perfil: "", sesiones: [], alimentos: [] };
+let DATOS = { perfil: "", sesiones: [], alimentos: [], salud: {} };
 
 function cargarDatos() {
   try {
@@ -15,11 +15,12 @@ function cargarDatos() {
         perfil: typeof parsed.perfil === "string" ? parsed.perfil : "",
         sesiones: Array.isArray(parsed.sesiones) ? parsed.sesiones : [],
         alimentos: Array.isArray(parsed.alimentos) ? parsed.alimentos : [],
+        salud: (parsed.salud && typeof parsed.salud === "object") ? parsed.salud : {},
       };
     }
   } catch (e) {
     console.error("No se pudieron cargar los datos:", e);
-    DATOS = { perfil: "", sesiones: [], alimentos: [] };
+    DATOS = { perfil: "", sesiones: [], alimentos: [], salud: {} };
   }
   return DATOS;
 }
@@ -80,6 +81,15 @@ function borrarAlimento(id) {
   persistir();
 }
 
+// ---- Salud (datos de la calculadora nutricional) ----
+function obtenerSalud() {
+  return DATOS.salud || {};
+}
+function guardarSalud(obj) {
+  DATOS.salud = obj || {};
+  persistir();
+}
+
 // Perfil
 function obtenerPerfil() {
   return DATOS.perfil;
@@ -124,6 +134,7 @@ function importarJSON(file) {
           perfil: typeof parsed.perfil === "string" ? parsed.perfil : DATOS.perfil,
           sesiones: parsed.sesiones,
           alimentos: Array.isArray(parsed.alimentos) ? parsed.alimentos : DATOS.alimentos,
+          salud: (parsed.salud && typeof parsed.salud === "object") ? parsed.salud : DATOS.salud,
         };
         persistir();
         resolve(DATOS.sesiones.length);
@@ -137,6 +148,6 @@ function importarJSON(file) {
 }
 
 function reiniciarDatos() {
-  DATOS = { perfil: DATOS.perfil, sesiones: [], alimentos: [] };
+  DATOS = { perfil: DATOS.perfil, sesiones: [], alimentos: [], salud: DATOS.salud };
   persistir();
 }

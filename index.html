@@ -66,20 +66,80 @@
       </div>
     </section>
 
-    <!-- MÉTRICAS -->
-    <section id="view-metricas" class="vista">
-      <h2>Métricas</h2>
-      <div class="controles-progreso">
-        <label>Métrica mensual
-          <select id="sel-metrica-mensual"></select>
-        </label>
+    <!-- SALUD (calculadora nutricional) -->
+    <section id="view-salud" class="vista">
+      <h2>Salud</h2>
+      <div class="salud-card">
+        <div class="campo-salud">
+          <div class="campo-cab">
+            <label for="sa-sexo">Sexo</label>
+            <button type="button" class="ayuda" aria-label="¿Qué es?">?</button>
+          </div>
+          <select id="sa-sexo">
+            <option value="hombre">Hombre</option>
+            <option value="mujer">Mujer</option>
+          </select>
+          <p class="ayuda-texto" hidden>El cuerpo de hombres y mujeres gasta energía de forma algo distinta, por eso la fórmula lo tiene en cuenta. Elige tu sexo biológico para que el cálculo sea más preciso.</p>
+        </div>
+
+        <div class="campo-salud">
+          <div class="campo-cab">
+            <label for="sa-edad">Edad (años)</label>
+            <button type="button" class="ayuda" aria-label="¿Qué es?">?</button>
+          </div>
+          <input type="number" id="sa-edad" inputmode="numeric" min="10" max="100" placeholder="Ej: 28">
+          <p class="ayuda-texto" hidden>Tu edad en años. A más edad, el cuerpo suele gastar un poco menos de energía en reposo.</p>
+        </div>
+
+        <div class="campo-salud">
+          <div class="campo-cab">
+            <label for="sa-altura">Altura (cm)</label>
+            <button type="button" class="ayuda" aria-label="¿Qué es?">?</button>
+          </div>
+          <input type="number" id="sa-altura" inputmode="numeric" min="100" max="230" placeholder="Ej: 175">
+          <p class="ayuda-texto" hidden>Tu estatura en centímetros (por ejemplo, 175). Se usa para calcular tu peso saludable y tu gasto de energía.</p>
+        </div>
+
+        <div class="campo-salud">
+          <div class="campo-cab">
+            <label for="sa-peso">Peso (kg)</label>
+            <button type="button" class="ayuda" aria-label="¿Qué es?">?</button>
+          </div>
+          <input type="number" id="sa-peso" inputmode="decimal" min="30" max="300" step="0.1" placeholder="Ej: 72">
+          <p class="ayuda-texto" hidden>Tu peso corporal actual en kilos. A ser posible pésate en ayunas y a la misma hora, así el dato es más estable.</p>
+        </div>
+
+        <div class="campo-salud">
+          <div class="campo-cab">
+            <label for="sa-actividad">Nivel de actividad</label>
+            <button type="button" class="ayuda" aria-label="¿Qué es?">?</button>
+          </div>
+          <select id="sa-actividad">
+            <option value="1.2">Sedentario (poco o nada de ejercicio)</option>
+            <option value="1.375">Ligero (ejercicio 1-3 días/semana)</option>
+            <option value="1.55" selected>Moderado (ejercicio 3-5 días/semana)</option>
+            <option value="1.725">Alto (ejercicio 6-7 días/semana)</option>
+            <option value="1.9">Muy alto (trabajo físico + entreno duro)</option>
+          </select>
+          <p class="ayuda-texto" hidden>Cuánto te mueves al día sumando trabajo y ejercicio. Cuanto más activo eres, más calorías quemas. Elige la opción que mejor describa tu semana normal.</p>
+        </div>
+
+        <div class="campo-salud">
+          <div class="campo-cab">
+            <label for="sa-objetivo">Objetivo</label>
+            <button type="button" class="ayuda" aria-label="¿Qué es?">?</button>
+          </div>
+          <select id="sa-objetivo">
+            <option value="perder">Perder grasa</option>
+            <option value="mantener" selected>Mantener peso</option>
+            <option value="ganar">Ganar músculo</option>
+          </select>
+          <p class="ayuda-texto" hidden>Qué quieres conseguir. Según esto se ajustan las calorías recomendadas: comer menos para perder grasa, igual para mantenerte, o algo más para ganar músculo.</p>
+        </div>
       </div>
-      <div id="metricas-resumen" class="resumen-progreso"></div>
-      <div class="grafico-wrap">
-        <canvas id="grafico-mensual"></canvas>
-        <p id="metricas-vacio" class="vacio"></p>
-      </div>
-      <div id="metricas-tabla" class="metricas-tabla"></div>
+
+      <div id="salud-resultados" class="salud-resultados"></div>
+      <p class="hint">Los resultados son una estimación orientativa basada en fórmulas estándar (Mifflin-St Jeor). No sustituyen el consejo de un profesional de la salud.</p>
     </section>
 
     <!-- ALIMENTOS -->
@@ -99,11 +159,8 @@
             <button id="btn-buscar-codigo" class="btn-secundario">Buscar</button>
           </div>
         </label>
-        <label class="btn-secundario importar-label" id="label-etiqueta">
-          <span class="emoji">🏷️</span> Leer etiqueta con foto (OCR)
-          <input type="file" id="input-etiqueta" accept="image/*" capture="environment" hidden>
-        </label>
-        <p class="hint">Úsalo si el producto no aparece: fotografía el recuadro de "Información nutricional".</p>
+        <button id="btn-manual" class="btn-secundario"><span class="emoji">✏️</span> Añadir producto manualmente</button>
+        <p class="hint">Si el producto no aparece, añádelo a mano con sus valores de la etiqueta.</p>
         <p id="escaner-estado" class="hint"></p>
       </div>
       <div id="alimento-resultado" class="alimento-resultado"></div>
@@ -142,7 +199,7 @@
     <button class="nav-btn" data-vista="entrenar"><span class="emoji">🏋️</span>Entrenar</button>
     <button class="nav-btn" data-vista="historial"><span class="emoji">📋</span>Historial</button>
     <button class="nav-btn" data-vista="progreso"><span class="emoji">📈</span>Progreso</button>
-    <button class="nav-btn" data-vista="metricas"><span class="emoji">📊</span>Métricas</button>
+    <button class="nav-btn" data-vista="salud"><span class="emoji">🧮</span>Salud</button>
     <button class="nav-btn" data-vista="alimentos"><span class="emoji">🍎</span>Comida</button>
     <button class="nav-btn" data-vista="ajustes"><span class="emoji">⚙️</span>Ajustes</button>
   </nav>
@@ -151,7 +208,7 @@
   <script src="js/routine.js"></script>
   <script src="js/storage.js"></script>
   <script src="js/charts.js"></script>
-  <script src="js/metricas.js"></script>
+  <script src="js/salud.js"></script>
   <script src="js/alimentos.js"></script>
   <script src="js/app.js"></script>
   <script>
