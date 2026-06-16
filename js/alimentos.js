@@ -1,8 +1,10 @@
 // Apartado "Alimentos": lee el código de barras del producto con la cámara
 // y obtiene sus valores nutricionales desde Open Food Facts (gratis, sin clave).
+// Si el producto no aparece, permite leer la etiqueta con una foto (OCR).
 // Todo se guarda en el dispositivo y entra en la copia de seguridad (.json).
 
 const OFF_API = "https://world.openfoodfacts.org/api/v2/product/";
+const TESS_URL = "https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js";
 
 let escanerStream = null;   // MediaStream de la cámara
 let escanerTimer = null;    // intervalo que analiza fotogramas
@@ -14,6 +16,11 @@ function configurarAlimentos() {
   document.getElementById("btn-buscar-codigo").addEventListener("click", buscarManual);
   document.getElementById("input-codigo").addEventListener("keydown", (e) => {
     if (e.key === "Enter") { e.preventDefault(); buscarManual(); }
+  });
+  document.getElementById("input-etiqueta").addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (file) leerEtiquetaFoto(file);
+    e.target.value = ""; // permite repetir la misma foto
   });
 }
 
@@ -37,7 +44,7 @@ async function iniciarEscaner() {
   }
   if (!("BarcodeDetector" in window)) {
     estado.textContent = "Este navegador no lee códigos automáticamente (p. ej. iPhone con Safari). " +
-      "Escribe el código de barras a mano y pulsa Buscar.";
+      "Escribe el código de barras a mano, o usa 'Leer etiqueta con foto'.";
     return;
   }
   try {
@@ -97,7 +104,7 @@ async function buscarYMostrar(codigo) {
     estado.textContent = "";
     if (!prod) {
       cont.innerHTML = `<p class="hint aviso">No encontramos el código <strong>${escapeHtml(codigo)}</strong> ` +
-        `en la base de datos. Rellena los datos a mano y guárdalo igualmente.</p>` +
+        `en la base de datos. Usa "Leer etiqueta con foto" o rellena los datos a mano y guárdalo igualmente.</p>` +
         tarjetaEditable({ codigo });
     } else {
       cont.innerHTML = `<p class="hint ok-msg">✔ Producto encontrado. Revisa y guarda.</p>` +
@@ -108,7 +115,7 @@ async function buscarYMostrar(codigo) {
   } catch (e) {
     estado.textContent = "";
     cont.innerHTML = `<p class="hint aviso">No se pudo consultar (¿sin conexión?). ` +
-      `Puedes escribir los valores a mano.</p>` + tarjetaEditable({ codigo });
+      `Puedes leer la etiqueta con una foto o escribir los valores a mano.</p>` + tarjetaEditable({ codigo });
     enlazarGuardar(cont);
   }
 }
@@ -137,6 +144,75 @@ async function buscarProducto(codigo) {
 
 function num(v) { const x = parseFloat(v); return isNaN(x) ? null : Math.round(x * 10) / 10; }
 function fmt(v, u) { return v === null || v === undefined ? "—" : v + (u || ""); }
+
+// ---------- OCR de la etiqueta nutricional (respaldo) ----------
+
+let tessCargando = null;
+
+// Carga Tesseract.js bajo demanda (solo la primera vez que se usa el OCR).
+function cargarTesseract() {
+  if (window.Tesseract) return Promise.resolve();
+  if (tessCargando) return tessCargando;
+  tessCargando = new Promise((resolve, reject) => {
+    const s = document.createElement("script");
+    s.src = TESS_URL;
+    s.onload = resolve;
+    s.onerror = () => { tessCargando = null; reject(new Error("no se pudo cargar el lector (¿sin conexión?)")); };
+    document.head.appendChild(s);
+  });
+  return tessCargando;
+}
+
+async function leerEtiquetaFoto(file) {
+  const estado = document.getElementById("escaner-estado");
+  const cont = document.getElementById("alimento-resultado");
+  cont.innerHTML = "";
+  estado.textContent = "Cargando lector de etiquetas…";
+  try {
+    await cargarTesseract();
+    estado.textContent = "Leyendo la etiqueta… esto puede tardar unos segundos.";
+    const { data } = await Tesseract.recognize(file, "spa");
+    const prod = parsearEtiqueta(data && data.text ? data.text : "");
+    estado.textContent = "";
+    cont.innerHTML = `<p class="hint ok-msg">✔ Etiqueta leída. Revisa los valores (corrige lo que haga falta), ` +
+      `ponle nombre y guarda.</p>` + tarjetaEditable(prod);
+    enlazarGuardar(cont);
+    cont.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  } catch (e) {
+    estado.textContent = "No se pudo leer la etiqueta (" + (e && e.message ? e.message : e) +
+      "). Prueba con una foto más nítida y recortada al recuadro nutricional, o escribe los valores a mano.";
+    cont.innerHTML = tarjetaEditable({});
+    enlazarGuardar(cont);
+  }
+}
+
+// Extrae los valores nutricionales del texto reconocido (etiquetas en español).
+function parsearEtiqueta(texto) {
+  const t = String(texto || "").replace(/\s+/g, " ").toLowerCase();
+  return {
+    nombre: "",
+    marca: "",
+    kcal: buscarKcal(t),
+    proteinas: numTras(t, "prote[ií]na"),
+    carbohidratos: numTras(t, "hidratos de carbono|carbohidratos|hidratos"),
+    azucares: numTras(t, "az[uú]cares"),
+    grasas: numTras(t, "grasas|materia grasa"),
+    sal: numTras(t, "\\bsal\\b"),
+  };
+}
+
+function buscarKcal(t) {
+  const m = t.match(/(\d+(?:[.,]\d+)?)\s*kcal/);
+  return m ? Math.round(parseFloat(m[1].replace(",", "."))) : null;
+}
+
+// Primer número que aparece justo después de una palabra clave.
+function numTras(t, kw) {
+  const re = new RegExp("(?:" + kw + ")[^0-9]{0,25}(\\d+(?:[.,]\\d+)?)");
+  const m = t.match(re);
+  if (!m) return null;
+  return Math.round(parseFloat(m[1].replace(",", ".")) * 10) / 10;
+}
 
 // ---------- Tarjeta editable (resultado) ----------
 

@@ -1,6 +1,6 @@
 // Service worker: cachea la app para que funcione offline.
 // Sube el número de versión cuando cambies archivos para forzar actualización.
-const CACHE = "mi-entreno-v4";
+const CACHE = "mi-entreno-v5";
 const ASSETS = [
   "./",
   "./index.html",

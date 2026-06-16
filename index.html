@@ -99,6 +99,11 @@
             <button id="btn-buscar-codigo" class="btn-secundario">Buscar</button>
           </div>
         </label>
+        <label class="btn-secundario importar-label" id="label-etiqueta">
+          <span class="emoji">🏷️</span> Leer etiqueta con foto (OCR)
+          <input type="file" id="input-etiqueta" accept="image/*" capture="environment" hidden>
+        </label>
+        <p class="hint">Úsalo si el producto no aparece: fotografía el recuadro de "Información nutricional".</p>
         <p id="escaner-estado" class="hint"></p>
       </div>
       <div id="alimento-resultado" class="alimento-resultado"></div>
