@@ -58,12 +58,55 @@ function configurarEntrenar() {
       btn.classList.add("activa");
       document.getElementById("fecha-entreno").value = ahoraLocalISO();
       renderFormularioEntreno();
+      guardarBorradorEntreno();
     });
   });
   document.getElementById("fecha-entreno").value = ahoraLocalISO();
   document.querySelector('.dia-btn[data-dia="push"]').classList.add("activa");
   document.getElementById("btn-guardar-sesion").addEventListener("click", guardarSesionActual);
+  // Autoguardado: cualquier cambio en el formulario o la fecha guarda un borrador.
+  document.getElementById("form-ejercicios").addEventListener("input", guardarBorradorEntreno);
+  document.getElementById("fecha-entreno").addEventListener("change", guardarBorradorEntreno);
   renderFormularioEntreno();
+  restaurarBorradorEntreno();
+}
+
+// Guarda en el dispositivo lo que hay ahora mismo en el formulario de Entrenar.
+function guardarBorradorEntreno() {
+  const valores = [];
+  document.querySelectorAll("#form-ejercicios .serie-row:not(.cab)").forEach((row) => {
+    const r = row.querySelector(".in-reps");
+    const k = row.querySelector(".in-kg");
+    valores.push({ ej: r.dataset.ej, set: r.dataset.set, reps: r.value, kg: k.value });
+  });
+  guardarBorrador({
+    dia: diaActual,
+    fecha: document.getElementById("fecha-entreno").value,
+    editandoSesionId: editandoSesionId,
+    valores: valores,
+  });
+}
+
+// Restaura el borrador (si lo hay) tras recargar la página.
+function restaurarBorradorEntreno() {
+  const b = obtenerBorrador();
+  if (!b || !Array.isArray(b.valores)) return;
+  const hayDatos = b.valores.some((v) => (v.reps && v.reps !== "") || (v.kg && v.kg !== ""));
+  if (!hayDatos && !b.editandoSesionId) return; // nada que restaurar
+
+  diaActual = b.dia || diaActual;
+  editandoSesionId = b.editandoSesionId || null;
+  document.querySelectorAll(".dia-btn").forEach((x) => x.classList.remove("activa"));
+  const btn = document.querySelector(`.dia-btn[data-dia="${diaActual}"]`);
+  if (btn) btn.classList.add("activa");
+  renderFormularioEntreno();
+  if (b.fecha) document.getElementById("fecha-entreno").value = b.fecha;
+  b.valores.forEach((v) => {
+    const r = document.querySelector(`.in-reps[data-ej="${v.ej}"][data-set="${v.set}"]`);
+    const k = document.querySelector(`.in-kg[data-ej="${v.ej}"][data-set="${v.set}"]`);
+    if (r) r.value = v.reps;
+    if (k) k.value = v.kg;
+  });
 }
 
 function renderFormularioEntreno() {
@@ -148,6 +191,7 @@ function guardarSesionActual() {
     series: series,
   };
   guardarSesion(sesion);
+  borrarBorrador(); // la sesión ya está guardada: descartamos el borrador
   editandoSesionId = null;
   alert("✅ Sesión guardada");
   document.getElementById("fecha-entreno").value = ahoraLocalISO();
@@ -234,6 +278,7 @@ function editarSesion(id) {
     if (reps) reps.value = se.reps;
     if (kg) kg.value = se.kg;
   });
+  guardarBorradorEntreno(); // que la edición en curso también sobreviva a una recarga
   mostrarVista("entrenar");
   window.scrollTo(0, 0);
 }

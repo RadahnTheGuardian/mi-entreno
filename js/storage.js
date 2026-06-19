@@ -151,3 +151,53 @@ function reiniciarDatos() {
   DATOS = { perfil: DATOS.perfil, sesiones: [], alimentos: [], salud: DATOS.salud };
   persistir();
 }
+
+// ---- Borrador del formulario de Entrenar ----
+// Se guarda aparte (no entra en la copia de seguridad) para no perder lo
+// que estás escribiendo si el navegador recarga la página (p. ej. Brave
+// al bloquear el móvil). Caduca a las 24 h para no resucitar datos viejos.
+const BORRADOR_KEY = "entreno_borrador_v1";
+const BORRADOR_TTL = 24 * 60 * 60 * 1000;
+
+function guardarBorrador(obj) {
+  try {
+    localStorage.setItem(BORRADOR_KEY, JSON.stringify({ ...obj, ts: Date.now() }));
+  } catch (e) { /* almacenamiento lleno o no disponible: lo ignoramos */ }
+}
+
+function obtenerBorrador() {
+  try {
+    const raw = localStorage.getItem(BORRADOR_KEY);
+    if (!raw) return null;
+    const b = JSON.parse(raw);
+    if (b && b.ts && (Date.now() - b.ts) > BORRADOR_TTL) { borrarBorrador(); return null; }
+    return b;
+  } catch (e) { return null; }
+}
+
+function borrarBorrador() {
+  try { localStorage.removeItem(BORRADOR_KEY); } catch (e) { /* nada */ }
+}
+
+// ---- Borrador de la ficha de Alimentos (mismo motivo que el de Entrenar) ----
+const ALIM_BORRADOR_KEY = "alimento_borrador_v1";
+
+function guardarBorradorAlimento(obj) {
+  try {
+    localStorage.setItem(ALIM_BORRADOR_KEY, JSON.stringify({ ...obj, ts: Date.now() }));
+  } catch (e) { /* nada */ }
+}
+
+function obtenerBorradorAlimento() {
+  try {
+    const raw = localStorage.getItem(ALIM_BORRADOR_KEY);
+    if (!raw) return null;
+    const b = JSON.parse(raw);
+    if (b && b.ts && (Date.now() - b.ts) > BORRADOR_TTL) { borrarBorradorAlimento(); return null; }
+    return b;
+  } catch (e) { return null; }
+}
+
+function borrarBorradorAlimento() {
+  try { localStorage.removeItem(ALIM_BORRADOR_KEY); } catch (e) { /* nada */ }
+}

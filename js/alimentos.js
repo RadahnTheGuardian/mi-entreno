@@ -17,6 +17,37 @@ function configurarAlimentos() {
     if (e.key === "Enter") { e.preventDefault(); buscarManual(); }
   });
   document.getElementById("btn-manual").addEventListener("click", anadirManual);
+
+  // Autoguardado de la ficha en edición: si el navegador recarga, no se pierde.
+  document.getElementById("alimento-resultado").addEventListener("input", () => {
+    const cont = document.getElementById("alimento-resultado");
+    if (cont.querySelector("#al-nombre")) guardarBorradorAlimento(leerCardAlimento(cont));
+  });
+
+  // Restaurar una ficha a medio rellenar tras una recarga.
+  const ba = obtenerBorradorAlimento();
+  if (ba && (ba.nombre || ba.kcal || ba.marca || ba.codigo)) {
+    const cont = document.getElementById("alimento-resultado");
+    cont.innerHTML = `<p class="hint ok-msg">↻ Recuperado lo que estabas añadiendo.</p>` + tarjetaEditable(ba);
+    enlazarGuardar(cont);
+  }
+}
+
+// Lee los campos de la ficha de alimento en edición a un objeto.
+function leerCardAlimento(cont) {
+  const g = (sel) => { const el = cont.querySelector(sel); return el ? el.value : ""; };
+  return {
+    codigo: g("#al-codigo").trim(),
+    imagen: g("#al-imagen"),
+    nombre: g("#al-nombre"),
+    marca: g("#al-marca"),
+    kcal: g("#al-kcal"),
+    proteinas: g("#al-prot"),
+    carbohidratos: g("#al-carb"),
+    azucares: g("#al-azuc"),
+    grasas: g("#al-gras"),
+    sal: g("#al-sal"),
+  };
 }
 
 // Muestra una ficha vacía para introducir un producto a mano.
@@ -175,6 +206,7 @@ function tarjetaEditable(prod) {
         ${campoNutri("al-sal", "Sal (g)", prod.sal)}
       </div>
       <input type="hidden" id="al-codigo" value="${escapeHtml(prod.codigo || "")}">
+      <input type="hidden" id="al-imagen" value="${escapeHtml(prod.imagen || "")}">
       <button id="btn-guardar-alimento" class="btn-principal"><span class="emoji">💾</span> Guardar alimento</button>
     </div>`;
 }
@@ -204,6 +236,7 @@ function enlazarGuardar(cont) {
       sal: leerNum(cont, "#al-sal"),
     };
     guardarAlimento(alimento);
+    borrarBorradorAlimento(); // ya guardado: descartamos el borrador
     cont.innerHTML = "";
     document.getElementById("input-codigo").value = "";
     document.getElementById("escaner-estado").textContent = "";

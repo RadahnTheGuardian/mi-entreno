@@ -12,6 +12,7 @@ tanto en **Android** como en **iPhone**, sin tiendas de apps.
 - ✅ **Salud**: calculadora de TMB, IMC, % de grasa estimado, peso saludable, calorías recomendadas, **macronutrientes** (proteína, carbohidratos y grasas) y **creatina**, con una ayuda **?** que explica cada dato.
 - ✅ **Alimentos**: escanea el código de barras de un producto con la cámara y se rellenan sus valores nutricionales (kcal, proteínas, hidratos, azúcares, grasas, sal) desde Open Food Facts. Si no aparece, **añádelo manualmente**. Se guardan en el dispositivo y entran en la copia de seguridad.
 - ✅ Interfaz con estética **cyberpunk** (rojo neón sobre gris oscuro).
+- ✅ **Autoguardado:** lo que escribes en Entrenar y en Comida se guarda solo según lo tecleas; si el navegador recarga la página (p. ej. al bloquear el móvil), no pierdes lo que llevabas.
 - ✅ Datos guardados **solo en tu móvil** + copia de seguridad exportable.
 
 > ⚠️ **Importante sobre los datos:** se guardan únicamente en el dispositivo donde usas la app.
